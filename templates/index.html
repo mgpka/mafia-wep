@@ -3,16 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مافيا الأمراء | بيت الخيانة</title>
+    <title>مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body {
             background: radial-gradient(circle at center, #181512 0%, #080808 70%, #000000 100%);
             color: #ffffff;
@@ -22,83 +15,97 @@
             align-items: center;
             justify-content: center;
             padding: 15px;
-            position: relative;
             overflow-x: hidden;
-        }
-
-        /* العلامة المائية للمافيا */
-        .mafia-watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-12deg);
-            font-size: 18vw;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.025);
-            letter-spacing: 15px;
-            pointer-events: none;
-            z-index: 1;
         }
 
         .gold-text {
             color: #d4af37;
-            text-shadow: 0 0 12px rgba(212, 175, 55, 0.4), 0 2px 4px rgba(0,0,0,0.9);
+            text-shadow: 0 0 14px rgba(212, 175, 55, 0.4), 0 2px 4px rgba(0,0,0,0.9);
         }
 
-        /* شاشة التريلر الافتتاحية */
-        #trailerView {
+        /* 1. الشاشة الترحيبية */
+        #welcomeView {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 1000;
+            background: radial-gradient(circle at center, #1c1813 0%, #080808 80%, #000 100%);
+            z-index: 5000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            text-align: center;
         }
-        .trailer-frame {
+        .welcome-box {
+            background: rgba(18, 18, 18, 0.96);
+            border: 2px solid rgba(212, 175, 55, 0.6);
+            border-radius: 16px;
+            padding: 35px 25px;
+            max-width: 480px;
+            width: 92%;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        .welcome-btn {
+            background: #d4af37;
+            color: #000;
+            border: none;
+            padding: 14px 45px;
+            border-radius: 30px;
+            font-size: 19px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5);
+            transition: 0.25s;
+        }
+        .welcome-btn:hover { background: #f3e5ab; transform: scale(1.05); }
+
+        /* 2. شاشة التريلر */
+        #trailerView {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 4000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .trailer-wrapper {
             width: 95%;
-            max-width: 800px;
-            height: 52vh;
+            max-width: 820px;
             border: 2px solid #d4af37;
             border-radius: 12px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+            overflow: hidden;
+            background: #000;
         }
-        .btn-skip {
-            margin-top: 25px;
+        .trailer-media {
+            width: 100%;
+            height: 52vh;
+            max-height: 500px;
+            display: block;
+            border: none;
+        }
+        .skip-btn {
+            margin-top: 20px;
             background: rgba(212, 175, 55, 0.15);
             border: 1px solid #d4af37;
             color: #d4af37;
-            padding: 12px 30px;
+            padding: 12px 32px;
             border-radius: 25px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
-        .btn-skip:hover {
-            background: #d4af37;
-            color: #000;
-            transform: scale(1.05);
-        }
+        .skip-btn:hover { background: #d4af37; color: #000; }
 
-        /* الحاوية الأساسية للعبة */
+        /* 3. واجهة اللعبة والمقاعد */
         .game-wrapper {
             width: 100%;
             max-width: 480px;
             text-align: center;
             z-index: 10;
         }
-
-        .header-title {
-            font-size: 26px;
-            font-weight: 900;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-
-        /* شبكة المقاعد 1 إلى 10 */
         .seats-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -112,7 +119,6 @@
             padding: 12px 4px;
             color: #eee;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -120,11 +126,9 @@
         }
         .seat-btn span.num { font-size: 18px; font-weight: bold; color: #d4af37; }
         .seat-btn span.name { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55px; }
-        .seat-btn:hover { border-color: #d4af37; transform: translateY(-3px); }
-        .seat-btn.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 12px rgba(212, 175, 55, 0.4); }
-        .seat-btn.disabled { opacity: 0.25; border-color: #333; pointer-events: none; text-decoration: line-through; }
+        .seat-btn.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); }
+        .seat-btn.disabled { opacity: 0.25; pointer-events: none; text-decoration: line-through; }
 
-        /* منطقة الصندوق المقفل */
         .box-display {
             width: 100%;
             max-width: 440px;
@@ -133,15 +137,9 @@
             border-radius: 14px;
             overflow: hidden;
             border: 2px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
             background: #0d0d0d;
         }
-        .box-display img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .box-display img { width: 100%; height: 100%; object-fit: cover; }
 
         .pin-input {
             width: 80%;
@@ -154,10 +152,9 @@
             text-align: center;
             font-size: 18px;
             letter-spacing: 5px;
-            outline: none;
             margin-bottom: 12px;
+            outline: none;
         }
-
         .btn-action {
             background: #1b5e20;
             border: 1px solid #2e7d32;
@@ -167,12 +164,9 @@
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
-            transition: 0.2s;
         }
-        .btn-action:hover { background: #2e7d32; transform: translateY(-2px); }
+        .btn-action:hover { background: #2e7d32; }
 
-        /* منطقة النتيجة والكرت المفتوح مع النص */
         .card-result {
             display: none;
             background: rgba(15, 15, 15, 0.95);
@@ -180,10 +174,7 @@
             border-radius: 12px;
             padding: 20px;
             margin-top: 15px;
-            animation: fadeIn 0.5s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-
         .card-result img {
             width: 170px;
             height: 250px;
@@ -191,10 +182,8 @@
             border-radius: 8px;
             border: 2px solid #d4af37;
             margin-bottom: 12px;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
-
-        .card-desc-text {
+        .card-desc-box {
             color: #f1f1f1;
             font-size: 15px;
             line-height: 1.6;
@@ -205,32 +194,7 @@
             border-right: 3px solid #d4af37;
         }
 
-        .error-box {
-            color: #ff5252;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-            background: rgba(255, 82, 82, 0.1);
-            padding: 6px;
-            border-radius: 4px;
-        }
-
-        /* زر لوحة التحكم */
-        .admin-link {
-            position: fixed;
-            bottom: 12px;
-            left: 12px;
-            font-size: 13px;
-            color: #d4af37;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            padding: 6px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 100;
-        }
-
-        /* النوافذ المنبثقة */
+        /* المودالز */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -238,8 +202,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 200;
-            backdrop-filter: blur(6px);
+            z-index: 6000;
         }
         .modal-content {
             background: #111;
@@ -251,10 +214,7 @@
             max-height: 90vh;
             overflow-y: auto;
             text-align: center;
-            box-shadow: 0 0 35px rgba(0,0,0,0.9);
         }
-
-        /* جدول لوحة التحكم */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
@@ -267,7 +227,6 @@
             text-align: center;
         }
         .admin-table th { background: #1a1a1a; color: #d4af37; }
-        
         .btn-table {
             padding: 6px 10px;
             border-radius: 4px;
@@ -278,89 +237,89 @@
             color: #fff;
             margin: 2px;
         }
-        .btn-del { background: #8b0000; }
-        .btn-edit { background: #0277bd; }
-        .btn-pin { background: #e65100; }
-        .btn-active { background: #2e7d32; }
     </style>
 </head>
 <body>
 
-    <div class="mafia-watermark">MAFIA</div>
-
-    <!-- 1. شاشة التريلر السينمائي -->
-    <div id="trailerView">
-        <h2 class="gold-text" style="margin-bottom: 15px;">مافيا الأمراء | بيت الخيانة</h2>
-        <iframe id="trailerFrame" class="trailer-frame" src="https://www.youtube.com/embed/AJgE_dLWsuQ?enablejsapi=1&autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <button class="btn-skip" onclick="finishTrailerAndStartGame()">تخطي العرض والدخول للعبة 👈</button>
+    <!-- 1. واجهة الترحيب الأساسية -->
+    <div id="welcomeView">
+        <div class="welcome-box">
+            <h1 class="gold-text" style="font-size: 26px; margin-bottom: 20px;">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
+            <p style="font-size: 17px; line-height: 1.8; margin-bottom: 30px; color: #e5e5e5;">
+                أهلاً وسهلاً بك في مافيا الأمراء..<br>
+                هنا يتم معرفة قوتك داخل اللعبة.<br>
+                اضغط على متابعة للاستمرار.
+            </p>
+            <button class="welcome-btn" onclick="startExperience()">متابعة 👈</button>
+        </div>
     </div>
 
-    <!-- 2. ساحة اللعبة الرئيسية -->
+    <!-- 2. شاشة التريلر -->
+    <div id="trailerView">
+        <h2 class="gold-text" style="margin-bottom: 15px;">مافيا الأمراء | العرض الرسمي</h2>
+        <div class="trailer-wrapper" id="trailerContainer">
+            <video id="nativeVideo" class="trailer-media" controls playsinline onended="finishTrailer()">
+                <source src="/static/trailer.mp4" type="video/mp4">
+                <source src="/static/تريلر.mp4" type="video/mp4">
+            </video>
+        </div>
+        <button class="skip-btn" onclick="finishTrailer()">تخطي العرض والدخول للعبة 👈</button>
+    </div>
+
+    <!-- 3. ساحة اللعبة -->
     <div class="game-wrapper">
-        <h1 class="header-title gold-text">🎩 مافيا الأمراء | بيت الخيانة 🔫</h1>
+        <h1 class="gold-text" style="font-size: 26px; margin-bottom: 8px;">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
         <p style="font-size: 13px; color: #aaa;">اختر رقم مقعدك وأدخل رمزك السري لفتح حقيبتك</p>
 
-        <!-- شبكة المقاعد 1 إلى 10 -->
         <div class="seats-grid" id="seatsGrid"></div>
 
-        <!-- منطقة الحقيبة -->
         <div id="boxSection" style="display: none;">
             <div class="box-display">
-                <img id="briefcaseImg" src="/static/box_closed.jpg" 
-                     onerror="tryAlternativeImage(this, ['/static/box_closed.png', '/static/box_closed.jpeg'])" 
-                     alt="حقيبة المافيا">
+                <img id="briefcaseImg" src="/static/box_closed.jpg" onerror="this.src='/static/box_closed.png'" alt="حقيبة المافيا">
             </div>
 
-            <!-- إدخال الرمز السري -->
             <div id="authArea">
                 <input type="password" id="pinInput" class="pin-input" placeholder="الرمز السري (PIN)">
                 <br>
                 <button class="btn-action" onclick="unlockBriefcase()">🔓 فتح الحقيبة السرية</button>
-                <div class="error-box" id="authError"></div>
+                <div id="authError" style="color: #ff5252; font-size: 13px; margin-top: 8px; display: none;"></div>
             </div>
 
-            <!-- الكرت المكشوف مع النص -->
             <div class="card-result" id="cardResult">
                 <h3 id="resPlayerName" class="gold-text" style="margin-bottom: 10px;"></h3>
                 <img id="resCardImg" src="" alt="كرت اللعبة">
                 <h2 id="resCardTitle" style="color: #fff; margin-bottom: 6px;"></h2>
-                <div class="card-desc-text" id="resCardDesc"></div>
+                <div class="card-desc-box" id="resCardDesc"></div>
             </div>
         </div>
     </div>
 
-    <!-- زر لوحة التحكم -->
-    <div class="admin-link" onclick="openAdminLogin()">⚙️ لوحة قيادة الماستر</div>
+    <!-- موسيقى العراب -->
+    <iframe id="bgMusic" style="position: absolute; width: 1px; height: 1px; opacity: 0; left: -9999px;" src="" allow="autoplay"></iframe>
 
-    <!-- مشغل موسيقى العراب الخفي في الخلفية -->
-    <iframe id="bgGodfatherMusic" 
-            style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; left: -9999px;" 
-            src="" 
-            allow="autoplay">
-    </iframe>
+    <!-- زر الأدمن -->
+    <div onclick="document.getElementById('adminLoginModal').style.display='flex'" style="position:fixed; bottom:12px; left:12px; font-size:13px; color:#d4af37; background:rgba(0,0,0,0.7); border:1px solid rgba(212,175,55,0.4); padding:6px 14px; border-radius:20px; cursor:pointer; z-index:100;">⚙️ لوحة قيادة الماستر</div>
 
-    <!-- نافذة دخول الأدمن -->
+    <!-- تسجيل دخول الأدمن -->
     <div class="modal" id="adminLoginModal">
         <div class="modal-content" style="max-width: 360px;">
             <h3 class="gold-text" style="margin-bottom: 15px;">دخول لوحة القيادة</h3>
-            <input type="email" id="adminEmail" placeholder="الإيميل" style="width: 100%; padding: 10px; margin-bottom: 10px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
-            <input type="password" id="adminPass" placeholder="كلمة المرور" style="width: 100%; padding: 10px; margin-bottom: 15px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
-            <button class="btn-action" style="width: 100%;" onclick="submitAdminLogin()">تسجيل الدخول</button>
-            <button onclick="closeModal('adminLoginModal')" style="margin-top: 12px; background:none; border:none; color:#777; cursor:pointer;">إلغاء</button>
+            <input type="email" id="adminEmail" placeholder="الإيميل" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
+            <input type="password" id="adminPass" placeholder="كلمة المرور" style="width:100%; padding:10px; margin-bottom:15px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
+            <button class="btn-action" style="width:100%;" onclick="submitAdminLogin()">تسجيل الدخول</button>
+            <button onclick="document.getElementById('adminLoginModal').style.display='none'" style="margin-top:12px; background:none; border:none; color:#777; cursor:pointer;">إلغاء</button>
         </div>
     </div>
 
-    <!-- نافذة لوحة التحكم الماستر -->
+    <!-- لوحة الماستر -->
     <div class="modal" id="adminDashboardModal">
         <div class="modal-content">
             <h2 class="gold-text" style="margin-bottom: 10px;">👑 لوحة التحكم باللاعبين والبطاقات</h2>
-            
-            <div style="display: flex; gap: 10px; justify-content: center; margin: 15px 0; flex-wrap: wrap;">
-                <button class="btn-action" style="background: #e65100; border-color:#ff9800; font-size:14px; padding:10px 18px;" onclick="rerollBombOnly()">💣 إعادة تعيين القنبلة فقط</button>
-                <button class="btn-action" style="background: #8b0000; border-color:#b71c1c; font-size:14px; padding:10px 18px;" onclick="shuffleAllCards()">🎲 إعادة تعيين جميع البطاقات</button>
-                <button class="btn-action" style="background: #0277bd; border-color:#039be5; font-size:14px; padding:10px 18px;" onclick="copyPinsForTelegram()">📋 نسخ الرموز للتليجرام</button>
+            <div style="display:flex; gap:10px; justify-content:center; margin:15px 0; flex-wrap:wrap;">
+                <button class="btn-action" style="background:#e65100; border-color:#ff9800; font-size:13px; padding:10px 16px;" onclick="rerollBomb()">💣 إعادة تعيين القنبلة فقط</button>
+                <button class="btn-action" style="background:#8b0000; border-color:#b71c1c; font-size:13px; padding:10px 16px;" onclick="shuffleAll()">🎲 إعادة تعيين جميع البطاقات</button>
+                <button class="btn-action" style="background:#0277bd; border-color:#039be5; font-size:13px; padding:10px 16px;" onclick="copyPins()">📋 نسخ الرموز للتليجرام</button>
             </div>
-
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -368,67 +327,57 @@
                         <th>الاسم</th>
                         <th>البطاقة الحالية</th>
                         <th>الرمز (PIN)</th>
-                        <th>الإجراءات والتحكم</th>
+                        <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody"></tbody>
             </table>
-
-            <button onclick="closeAdminDashboard()" style="margin-top: 20px; padding: 8px 24px; background:#333; border:none; color:#fff; border-radius:6px; cursor:pointer;">إغلاق اللوحة</button>
+            <button onclick="closeDashboard()" style="margin-top:20px; padding:8px 24px; background:#333; border:none; color:#fff; border-radius:6px; cursor:pointer;">إغلاق اللوحة</button>
         </div>
     </div>
 
-    <!-- نافذة تعديل النص الدائم للبطاقة -->
-    <div class="modal" id="editCardTextModal">
+    <!-- نافذة تعديل النص -->
+    <div class="modal" id="editTextModal">
         <div class="modal-content" style="max-width: 440px;">
             <h3 class="gold-text" style="margin-bottom: 12px;">تعديل النص المخصص للبطاقة</h3>
             <input type="hidden" id="editCardId">
-            <div style="text-align: right; margin-bottom: 8px;">
-                <label style="font-size: 13px; color: #aaa;">عنوان البطاقة:</label>
-                <input type="text" id="editCardName" style="width: 100%; padding: 8px; margin-top:4px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
-            </div>
-            <div style="text-align: right; margin-bottom: 15px;">
-                <label style="font-size: 13px; color: #aaa;">النص الذي يظهر أسفل الصندوق:</label>
-                <textarea id="editCardDesc" rows="4" style="width: 100%; padding: 8px; margin-top:4px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;"></textarea>
-            </div>
-            <button class="btn-action" style="width: 100%;" onclick="saveCardText()">💾 حفظ التعديل بشكل دائم</button>
-            <button onclick="closeModal('editCardTextModal')" style="margin-top: 10px; background:none; border:none; color:#777; cursor:pointer;">إلغاء</button>
+            <input type="text" id="editCardName" placeholder="عنوان البطاقة" style="width:100%; padding:8px; margin-bottom:10px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
+            <textarea id="editCardDesc" rows="4" placeholder="النص الذي يظهر أسفل الصندوق" style="width:100%; padding:8px; margin-bottom:15px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;"></textarea>
+            <button class="btn-action" style="width:100%;" onclick="saveCardText()">💾 حفظ التعديل بشكل دائم</button>
+            <button onclick="document.getElementById('editTextModal').style.display='none'" style="margin-top:10px; background:none; border:none; color:#777; cursor:pointer;">إلغاء</button>
         </div>
     </div>
 
     <script>
         let selectedSeat = null;
-        let gameData = null;
         let adminData = null;
 
-        // 1. تحميل المقاعد
-        async function initGame() {
+        async function init() {
             try {
                 const res = await fetch('/api/game-info');
-                gameData = await res.json();
-                renderSeats(gameData.players);
+                const data = await res.json();
+                renderSeats(data.players);
             } catch(e) {}
         }
-        initGame();
+        init();
 
-        function tryAlternativeImage(imgElement, alternatives) {
-            if (alternatives && alternatives.length > 0) {
-                const nextSrc = alternatives.shift();
-                imgElement.onerror = function() {
-                    tryAlternativeImage(imgElement, alternatives);
-                };
-                imgElement.src = nextSrc;
-            }
+        function startExperience() {
+            document.getElementById('welcomeView').style.display = 'none';
+            document.getElementById('trailerView').style.display = 'flex';
+            
+            const vid = document.getElementById('nativeVideo');
+            vid.play().catch(() => {
+                // إذا تعذر تشغيل ملف الفيديو لعدم رفعه، يتم تشغيل التريلر البديل فوراً
+                document.getElementById('trailerContainer').innerHTML = 
+                    '<iframe class="trailer-media" src="https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            });
         }
 
-        // 2. إنهاء التريلر وبدء موسيقى العراب
-        function finishTrailerAndStartGame() {
+        function finishTrailer() {
+            const vid = document.getElementById('nativeVideo');
+            if (vid) vid.pause();
             document.getElementById('trailerView').style.display = 'none';
-            document.getElementById('trailerFrame').src = ""; // إيقاف فيديو التريلر تماماً
-            
-            // تشغيل موسيقى العراب في الخلفية بحلقة مكررة
-            const musicPlayer = document.getElementById('bgGodfatherMusic');
-            musicPlayer.src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
+            document.getElementById('bgMusic').src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
         }
 
         function renderSeats(players) {
@@ -439,9 +388,7 @@
                 btn.className = `seat-btn ${p.is_active ? '' : 'disabled'}`;
                 btn.id = `seat_btn_${p.seat}`;
                 btn.innerHTML = `<span class="num">${p.seat}</span><span class="name">${p.name}</span>`;
-                if (p.is_active) {
-                    btn.onclick = () => selectSeat(p.seat);
-                }
+                if (p.is_active) btn.onclick = () => selectSeat(p.seat);
                 grid.appendChild(btn);
             });
         }
@@ -450,7 +397,6 @@
             selectedSeat = seat;
             document.querySelectorAll('.seat-btn').forEach(b => b.classList.remove('selected'));
             document.getElementById(`seat_btn_${seat}`).classList.add('selected');
-
             document.getElementById('boxSection').style.display = 'block';
             document.getElementById('authArea').style.display = 'block';
             document.getElementById('cardResult').style.display = 'none';
@@ -459,94 +405,56 @@
             document.getElementById('authError').style.display = 'none';
         }
 
-        // 3. فتح الحقيبة والتحقق
         async function unlockBriefcase() {
             const pin = document.getElementById('pinInput').value.trim();
             const err = document.getElementById('authError');
             err.style.display = 'none';
+            if (!pin) { err.innerText = 'أدخل الرمز السري'; err.style.display = 'block'; return; }
 
-            if (!pin) {
-                err.innerText = 'يرجى إدخال الرمز السري';
+            const res = await fetch('/api/open-box', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ seat: selectedSeat, pin })
+            });
+            const data = await res.json();
+
+            if (res.ok && data.status === 'success') {
+                document.getElementById('authArea').style.display = 'none';
+                document.getElementById('briefcaseImg').src = '/static/' + data.card.img;
+                document.getElementById('resPlayerName').innerText = `المشارك: ${data.player_name} (المقعد ${data.seat})`;
+                document.getElementById('resCardImg').src = '/static/' + data.card.img;
+                document.getElementById('resCardTitle').innerText = data.card.name;
+                document.getElementById('resCardDesc').innerText = data.card.desc;
+                document.getElementById('cardResult').style.display = 'block';
+            } else {
+                err.innerText = data.message || 'خطأ في التحقق';
                 err.style.display = 'block';
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/open-box', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ seat: selectedSeat, pin })
-                });
-                const data = await res.json();
-
-                if (res.ok && data.status === 'success') {
-                    // إخفاء حقل الإدخال
-                    document.getElementById('authArea').style.display = 'none';
-                    // تغيير صورة الحقيبة للصورة الخاصة بهذه البطاقة
-                    document.getElementById('briefcaseImg').src = '/static/' + data.card.img;
-
-                    // عرض معلومات الكرت والنص
-                    document.getElementById('resPlayerName').innerText = `المشارك: ${data.player_name} (المقعد ${data.seat})`;
-                    document.getElementById('resCardImg').src = '/static/' + data.card.img;
-                    document.getElementById('resCardTitle').innerText = data.card.name;
-                    document.getElementById('resCardDesc').innerText = data.card.desc;
-                    document.getElementById('cardResult').style.display = 'block';
-                } else {
-                    err.innerText = data.message || 'حدث خطأ بالتحقق';
-                    err.style.display = 'block';
-                }
-            } catch(e) {
-                err.innerText = 'تعذر الاتصال بالسيرفر';
-                err.style.display = 'block';
-            }
-        }
-
-        // 4. نظام الأدمن (الموسيقى صامتة أثناء فتح اللوحة)
-        function openAdminLogin() {
-            document.getElementById('adminLoginModal').style.display = 'flex';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        function closeAdminDashboard() {
-            closeModal('adminDashboardModal');
-            // إعادة تشغيل الموسيقى بعد إغلاق اللوحة
-            const musicPlayer = document.getElementById('bgGodfatherMusic');
-            if (musicPlayer.src === "" || musicPlayer.src.includes("about:blank")) {
-                musicPlayer.src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
             }
         }
 
         async function submitAdminLogin() {
             const email = document.getElementById('adminEmail').value.trim();
             const password = document.getElementById('adminPass').value.trim();
-
             const res = await fetch('/api/admin/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
-
             if (res.ok) {
-                closeModal('adminLoginModal');
-                // كتم الموسيقى أثناء العمل على لوحة التحكم
-                document.getElementById('bgGodfatherMusic').src = "";
-                loadAdminDashboard();
+                document.getElementById('adminLoginModal').style.display = 'none';
+                document.getElementById('bgMusic').src = "";
+                loadDashboard();
             } else {
-                alert('الإيميل أو كلمة المرور غير صحيحة!');
+                alert('بيانات الدخول خاطئة!');
             }
         }
 
-        async function loadAdminDashboard() {
+        async function loadDashboard() {
             document.getElementById('adminDashboardModal').style.display = 'flex';
             const res = await fetch('/api/admin/data');
             adminData = await res.json();
-
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
-
             adminData.players.forEach(p => {
                 const card = adminData.cards.find(c => c.id === p.card_id) || adminData.cards[0];
                 const tr = document.createElement('tr');
@@ -554,104 +462,75 @@
                     <td><b>${p.seat}</b></td>
                     <td>${p.name}</td>
                     <td><b style="color:#d4af37;">${card.name}</b></td>
-                    <td><span style="letter-spacing:2px; font-weight:bold;">${p.pin}</span></td>
+                    <td><b>${p.pin}</b></td>
                     <td>
-                        <button class="btn-table ${p.is_active ? 'btn-del' : 'btn-active'}" onclick="togglePlayerStatus(${p.seat})">
-                            ${p.is_active ? '🔴 حذف اللاعب' : '🟢 إعادة تفعيل'}
-                        </button>
-                        <button class="btn-table btn-edit" onclick="openEditCardModal(${card.id})">
-                            📝 تعديل النص
-                        </button>
-                        <button class="btn-table btn-pin" onclick="promptChangePin(${p.seat}, '${p.pin}')">
-                            🔑 تغيير الرمز
-                        </button>
+                        <button class="btn-table" style="background:${p.is_active ? '#8b0000':'#2e7d32'}" onclick="toggleStatus(${p.seat})">${p.is_active ? '🔴 حذف' : '🟢 تفعيل'}</button>
+                        <button class="btn-table" style="background:#0277bd" onclick="openEditText(${card.id})">📝 تعديل النص</button>
+                        <button class="btn-table" style="background:#e65100" onclick="changePin(${p.seat}, '${p.pin}')">🔑 الرمز</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // الإجراء 1: حذف / استبعاد اللاعب
-        async function togglePlayerStatus(seat) {
-            await fetch('/api/admin/player/toggle-status', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ seat })
-            });
-            loadAdminDashboard();
-            initGame();
+        function closeDashboard() {
+            document.getElementById('adminDashboardModal').style.display = 'none';
+            document.getElementById('bgMusic').src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
         }
 
-        // الإجراء 2: تغيير الرمز السري
-        async function promptChangePin(seat, currentPin) {
-            const newPin = prompt(`أدخل الرمز السري الجديد للمقعد رقم (${seat}):`, currentPin);
-            if (newPin && newPin.trim() !== "") {
-                await fetch('/api/admin/player/update-pin', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ seat, pin: newPin.trim() })
-                });
-                loadAdminDashboard();
+        async function toggleStatus(seat) {
+            await fetch('/api/admin/player/toggle', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ seat }) });
+            loadDashboard(); init();
+        }
+
+        async function changePin(seat, cur) {
+            const p = prompt(`أدخل الرمز السري الجديد للمقعد (${seat}):`, cur);
+            if (p && p.trim()) {
+                await fetch('/api/admin/player/pin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ seat, pin: p.trim() }) });
+                loadDashboard();
             }
         }
 
-        // الإجراء 3: تعديل النص الدائم للبطاقة
-        function openEditCardModal(cardId) {
-            const card = adminData.cards.find(c => c.id === cardId);
-            if (!card) return;
+        function openEditText(id) {
+            const card = adminData.cards.find(c => c.id === id);
             document.getElementById('editCardId').value = card.id;
             document.getElementById('editCardName').value = card.name;
             document.getElementById('editCardDesc').value = card.desc;
-            document.getElementById('editCardTextModal').style.display = 'flex';
+            document.getElementById('editTextModal').style.display = 'flex';
         }
 
         async function saveCardText() {
             const card_id = document.getElementById('editCardId').value;
             const name = document.getElementById('editCardName').value.trim();
             const desc = document.getElementById('editCardDesc').value.trim();
-
-            await fetch('/api/admin/card/update-text', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ card_id, name, desc })
-            });
-            closeModal('editCardTextModal');
-            alert('تم حفظ النص الجديد بنجاح!');
-            loadAdminDashboard();
+            await fetch('/api/admin/card/text', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ card_id, name, desc }) });
+            document.getElementById('editTextModal').style.display = 'none';
+            loadDashboard();
         }
 
-        // الأزرار السفلية: نقل القنبلة فقط
-        async function rerollBombOnly() {
-            if (confirm('هل تريد نقل القنبلة فقط لشخص آخر؟ (ستبقى بقية بطاقات ونصوص اللاعبين ثابتة)')) {
+        async function rerollBomb() {
+            if (confirm('هل تريد نقل القنبلة فقط عشوائياً لشخص آخر؟')) {
                 const res = await fetch('/api/admin/reroll-bomb', { method: 'POST' });
-                const data = await res.json();
-                alert(data.message || 'تم تحديث موقع القنبلة بنجاح');
-                loadAdminDashboard();
+                const d = await res.json();
+                alert(d.message);
+                loadDashboard();
             }
         }
 
-        // الأزرار السفلية: إعادة تعيين جميع البطاقات
-        async function shuffleAllCards() {
-            if (confirm('⚠️ هل أنت متأكد من خلط جميع البطاقات بالكامل؟ (ستنتقل صور ونصوص كل بطاقة إلى صاحبها الجديد فوراً)')) {
+        async function shuffleAll() {
+            if (confirm('هل أنت متأكد من إعادة تعيين جميع البطاقات بالكامل؟')) {
                 await fetch('/api/admin/shuffle-all', { method: 'POST' });
-                alert('تمت إعادة توزيع جميع البطاقات بنجاح!');
-                loadAdminDashboard();
+                alert('تم التوزيع العشوائي لجميع البطاقات بنجاح!');
+                loadDashboard();
             }
         }
 
-        // نسخ الرموز للتليجرام
-        async function copyPinsForTelegram() {
+        async function copyPins() {
             const res = await fetch('/api/admin/data');
             const data = await res.json();
             let msg = "🎩 *رموز دخول مافيا الأمراء (PIN)* 🔫\n\n";
-            data.players.forEach(p => {
-                if (p.is_active) {
-                    msg += `المقعد [${p.seat}]: ${p.name} 🔑 الرمز: \`${p.pin}\`\n`;
-                }
-            });
-            navigator.clipboard.writeText(msg).then(() => {
-                alert('تم نسخ قائمة الرموز السرية بنجاح! يمكنك إرسال كل رمز لصاحبه بالخاص.');
-            });
+            data.players.forEach(p => { if (p.is_active) msg += `المقعد [${p.seat}]: ${p.name} 🔑 الرمز: \`${p.pin}\`\n`; });
+            navigator.clipboard.writeText(msg).then(() => alert('تم نسخ الرموز السرية بنجاح!'));
         }
     </script>
 </body>
