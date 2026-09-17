@@ -2,28 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰</title>
-    <link rel="preload" href="/static/trailer.mp4" as="video" type="video/mp4">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
         
-        body {
-            background: radial-gradient(circle at center, #181512 0%, #080808 70%, #000000 100%);
-            color: #ffffff;
+        html, body {
+            width: 100%;
             min-height: 100vh;
+            background: #0a0908;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 15px;
-            overflow-x: hidden;
-            overflow-y: auto;
+            justify-content: flex-start;
+            padding: 15px 10px 40px 10px;
         }
 
         .gold-text {
             color: #d4af37;
-            text-shadow: 0 0 14px rgba(212, 175, 55, 0.4), 0 2px 4px rgba(0,0,0,0.9);
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.4), 0 2px 4px rgba(0,0,0,0.9);
         }
 
         /* 1. الشاشة الترحيبية */
@@ -38,15 +40,14 @@
             justify-content: center;
             padding: 20px;
             text-align: center;
-            transition: opacity 0.3s ease, visibility 0.3s;
         }
         .welcome-box {
             background: rgba(18, 18, 18, 0.96);
             border: 2px solid rgba(212, 175, 55, 0.6);
             border-radius: 16px;
-            padding: 35px 25px;
-            max-width: 480px;
-            width: 92%;
+            padding: 35px 20px;
+            max-width: 440px;
+            width: 95%;
             box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2);
         }
         .welcome-btn {
@@ -55,20 +56,20 @@
             border: none;
             padding: 14px 45px;
             border-radius: 30px;
-            font-size: 19px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5);
-            transition: 0.25s;
+            transition: 0.2s;
         }
-        .welcome-btn:hover { background: #f3e5ab; transform: scale(1.05); }
+        .welcome-btn:active { transform: scale(0.96); }
 
-        /* 2. شاشة تدوير الهاتف الإجبارية للتريلر */
+        /* 2. شاشة تدوير الهاتف الإجبارية أثناء التريلر */
         #rotatePromptView {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000000;
-            z-index: 11000;
+            z-index: 95000;
             display: none;
             flex-direction: column;
             align-items: center;
@@ -77,9 +78,9 @@
             padding: 25px;
         }
         .phone-rotate-icon {
-            font-size: 70px;
+            font-size: 65px;
             margin-bottom: 20px;
-            animation: rotateAnim 1.8s infinite ease-in-out;
+            animation: rotateAnim 1.6s infinite ease-in-out;
         }
         @keyframes rotateAnim {
             0% { transform: rotate(0deg); }
@@ -87,25 +88,16 @@
             100% { transform: rotate(0deg); }
         }
 
-        /* 3. شاشة السينما (تجهيز مسبق بالخلفية بدون display:none) */
+        /* 3. شاشة السينما الخالصة */
         #trailerView {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000000;
-            z-index: 9000;
-            display: flex;
+            z-index: 80000;
+            display: none;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-        #trailerView.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
         }
         .cinema-video-screen {
             width: 100vw;
@@ -116,61 +108,68 @@
         }
         .cinema-skip-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1.5px solid #d4af37;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #d4af37;
             color: #d4af37;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 30px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 9500;
-            backdrop-filter: blur(6px);
-            transition: 0.2s;
+            z-index: 9999999 !important;
+            touch-action: manipulation;
         }
-        .cinema-skip-btn:hover { background: #d4af37; color: #000; }
+        .cinema-skip-btn:active { background: #d4af37; color: #000; }
 
-        /* 4. ساحة اللعبة الأساسية (متجاوبة بالطول وبالعرض) */
+        /* 4. ساحة اللعبة المتجاوبة الاحترافية للموبايل */
         .game-wrapper {
             width: 100%;
-            max-width: 480px;
+            max-width: 440px;
             text-align: center;
             z-index: 10;
-            margin: auto;
-            transition: all 0.3s ease;
+            margin: 0 auto;
         }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 900;
+            margin: 10px 0 4px 0;
+            letter-spacing: 1px;
+        }
+
         .seats-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 20px 0;
+            gap: 6px;
+            margin: 15px 0;
+            width: 100%;
         }
         .seat-btn {
             background: #141414;
             border: 1px solid #333;
             border-radius: 8px;
-            padding: 12px 4px;
+            padding: 10px 2px;
             color: #eee;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            transition: 0.2s;
+            gap: 2px;
         }
-        .seat-btn span.num { font-size: 18px; font-weight: bold; color: #d4af37; }
+        .seat-btn span.num { font-size: 17px; font-weight: bold; color: #d4af37; }
         .seat-btn span.name { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 55px; }
-        .seat-btn.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); }
+        .seat-btn.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.18); box-shadow: 0 0 10px rgba(212,175,55,0.4); }
         .seat-btn.disabled { opacity: 0.25; pointer-events: none; text-decoration: line-through; }
 
+        /* منطقة الصندوق المصممة بمقاييس العرض والارتفاع المتجاوب */
         .box-display {
             width: 100%;
-            max-width: 440px;
-            height: 270px;
-            margin: 15px auto;
-            border-radius: 14px;
+            max-width: 380px;
+            aspect-ratio: 16 / 10;
+            margin: 12px auto;
+            border-radius: 12px;
             overflow: hidden;
             border: 2px solid rgba(212, 175, 55, 0.4);
             background: #0d0d0d;
@@ -178,8 +177,8 @@
         .box-display img { width: 100%; height: 100%; object-fit: cover; }
 
         .pin-input {
-            width: 80%;
-            max-width: 280px;
+            width: 100%;
+            max-width: 240px;
             padding: 12px;
             background: #121212;
             border: 1px solid #d4af37;
@@ -187,8 +186,8 @@
             color: #fff;
             text-align: center;
             font-size: 18px;
-            letter-spacing: 5px;
-            margin-bottom: 12px;
+            letter-spacing: 6px;
+            margin-bottom: 10px;
             outline: none;
         }
         .btn-action {
@@ -196,51 +195,50 @@
             border: 1px solid #2e7d32;
             color: #fff;
             padding: 12px 28px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
         }
-        .btn-action:hover { background: #2e7d32; }
+        .btn-action:active { background: #2e7d32; transform: scale(0.98); }
 
         .card-result {
             display: none;
             background: rgba(15, 15, 15, 0.95);
             border: 1px solid #d4af37;
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 15px;
+            padding: 15px;
+            margin-top: 12px;
         }
         .card-result img {
-            width: 170px;
-            height: 250px;
+            width: 150px;
+            height: 220px;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid #d4af37;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .card-desc-box {
             color: #f1f1f1;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 6px;
             background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             border-right: 3px solid #d4af37;
         }
 
-        /* تكييف شاشة اللعبة في الوضع العرضي */
-        @media (max-height: 520px) and (orientation: landscape) {
-            body { justify-content: flex-start; padding: 8px; }
-            .game-wrapper { max-width: 94%; }
-            .seats-grid { grid-template-columns: repeat(10, 1fr); gap: 4px; margin: 8px 0; }
-            .seat-btn { padding: 6px 2px; }
-            .seat-btn span.num { font-size: 15px; }
-            .box-display { max-width: 300px; height: 170px; margin: 8px auto; }
+        /* تكيف ساحة اللعبة في حال قلب الهاتف بالعرض */
+        @media (orientation: landscape) and (max-height: 520px) {
+            body { padding: 5px; }
+            .game-wrapper { max-width: 96%; }
+            .seats-grid { grid-template-columns: repeat(10, 1fr); gap: 4px; margin: 6px 0; }
+            .seat-btn { padding: 5px 1px; }
+            .box-display { max-width: 250px; margin: 6px auto; }
             .pin-input { padding: 6px; font-size: 15px; margin-bottom: 6px; }
             .btn-action { padding: 6px 18px; font-size: 13px; }
-            .card-result img { width: 110px; height: 160px; }
+            .card-result img { width: 100px; height: 140px; }
         }
 
         /* المودالز */
@@ -251,15 +249,15 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 12000;
+            z-index: 99999;
         }
         .modal-content {
             background: #111;
             border: 1px solid rgba(212, 175, 55, 0.4);
             border-radius: 12px;
-            padding: 22px;
-            width: 94%;
-            max-width: 720px;
+            padding: 20px;
+            width: 95%;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
             text-align: center;
@@ -268,18 +266,18 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            font-size: 13px;
+            font-size: 12px;
         }
         .admin-table th, .admin-table td {
             border: 1px solid #222;
-            padding: 10px 6px;
+            padding: 8px 4px;
             text-align: center;
         }
         .admin-table th { background: #1a1a1a; color: #d4af37; }
         .btn-table {
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             border: none;
@@ -293,8 +291,8 @@
     <!-- 1. الشاشة الترحيبية -->
     <div id="welcomeView">
         <div class="welcome-box">
-            <h1 class="gold-text" style="font-size: 26px; margin-bottom: 20px;">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
-            <p style="font-size: 17px; line-height: 1.8; margin-bottom: 30px; color: #e5e5e5;">
+            <h1 class="gold-text" style="font-size: 24px; margin-bottom: 18px;">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
+            <p style="font-size: 16px; line-height: 1.8; margin-bottom: 25px; color: #e5e5e5;">
                 أهلاً وسهلاً بك في مافيا الأمراء..<br>
                 هنا يتم معرفة قوتك داخل اللعبة.<br>
                 اضغط على متابعة للاستمرار.
@@ -303,25 +301,25 @@
         </div>
     </div>
 
-    <!-- 2. شاشة تنبيه تدوير الهاتف -->
+    <!-- 2. شاشة إجبار تدوير الهاتف (تظهر إذا كان الهاتف بالطول أثناء التريلر) -->
     <div id="rotatePromptView">
         <div class="phone-rotate-icon">📱 🔄</div>
-        <h2 class="gold-text" style="font-size: 22px; margin-bottom: 12px;">يرجى تدوير هاتفك بالعرض</h2>
-        <p style="font-size: 15px; color: #ccc; max-width: 320px; line-height: 1.6;">
-            افتح خيار التدوير التلقائي واقلب جهازك بالعرض لمشاهدة التريلر السينمائي.
+        <h2 class="gold-text" style="font-size: 20px; margin-bottom: 10px;">يرجى تدوير هاتفك بالعرض</h2>
+        <p style="font-size: 14px; color: #ccc; max-width: 300px; line-height: 1.6;">
+            يجب إبقاء الهاتف في الوضع العرضي للاستمتاع بالعرض السينمائي.
         </p>
     </div>
 
-    <!-- 3. شاشة السينما المحملة مسبقاً -->
+    <!-- 3. شاشة السينما الخالصة -->
     <div id="trailerView">
-        <button class="cinema-skip-btn" onclick="finishTrailer()">تخطي العرض ✕</button>
+        <button class="cinema-skip-btn" id="cinemaSkipBtn" onclick="finishTrailer(event)">تخطي العرض ✕</button>
         <video id="nativeVideo" 
                class="cinema-video-screen" 
-               preload="auto" 
+               preload="metadata" 
                playsinline 
                webkit-playsinline 
                disablePictureInPicture 
-               onended="finishTrailer()">
+               onended="finishTrailer(event)">
             <source src="/static/trailer.mp4" type="video/mp4">
             <source src="/static/تريلر.mp4" type="video/mp4">
         </video>
@@ -329,8 +327,8 @@
 
     <!-- 4. ساحة اللعبة -->
     <div class="game-wrapper">
-        <h1 class="gold-text" style="font-size: 26px; margin-bottom: 8px;">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
-        <p style="font-size: 13px; color: #aaa;">اختر رقم مقعدك وأدخل رمزك السري لفتح حقيبتك</p>
+        <h1 class="header-title gold-text">🎩 مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰 🔫</h1>
+        <p style="font-size: 12px; color: #aaa;">اختر رقم مقعدك وأدخل رمزك السري لفتح حقيبتك</p>
 
         <div class="seats-grid" id="seatsGrid"></div>
 
@@ -340,30 +338,30 @@
             </div>
 
             <div id="authArea">
-                <input type="password" id="pinInput" class="pin-input" placeholder="الرمز السري (PIN)">
+                <input type="password" id="pinInput" class="pin-input" placeholder="الرمز (PIN)" pattern="[0-9]*" inputmode="numeric">
                 <br>
                 <button class="btn-action" onclick="unlockBriefcase()">🔓 فتح الحقيبة السرية</button>
                 <div id="authError" style="color: #ff5252; font-size: 13px; margin-top: 8px; display: none;"></div>
             </div>
 
             <div class="card-result" id="cardResult">
-                <h3 id="resPlayerName" class="gold-text" style="margin-bottom: 10px;"></h3>
+                <h3 id="resPlayerName" class="gold-text" style="margin-bottom: 8px; font-size: 16px;"></h3>
                 <img id="resCardImg" src="" alt="كرت اللعبة">
-                <h2 id="resCardTitle" style="color: #fff; margin-bottom: 6px;"></h2>
+                <h2 id="resCardTitle" style="color: #fff; margin-bottom: 6px; font-size: 18px;"></h2>
                 <div class="card-desc-box" id="resCardDesc"></div>
             </div>
         </div>
     </div>
 
-    <!-- موسيقى العراب -->
+    <!-- موسيقى العراب الخفية في الخلفية -->
     <iframe id="bgMusic" style="position: absolute; width: 1px; height: 1px; opacity: 0; left: -9999px;" src="" allow="autoplay"></iframe>
 
     <!-- زر الأدمن -->
-    <div onclick="document.getElementById('adminLoginModal').style.display='flex'" style="position:fixed; bottom:12px; left:12px; font-size:13px; color:#d4af37; background:rgba(0,0,0,0.7); border:1px solid rgba(212,175,55,0.4); padding:6px 14px; border-radius:20px; cursor:pointer; z-index:100;">⚙️ لوحة قيادة الماستر</div>
+    <div onclick="document.getElementById('adminLoginModal').style.display='flex'" style="position:fixed; bottom:10px; left:10px; font-size:12px; color:#d4af37; background:rgba(0,0,0,0.7); border:1px solid rgba(212,175,55,0.4); padding:5px 12px; border-radius:20px; cursor:pointer; z-index:100;">⚙️ لوحة قيادة الماستر</div>
 
     <!-- تسجيل دخول الأدمن -->
     <div class="modal" id="adminLoginModal">
-        <div class="modal-content" style="max-width: 360px;">
+        <div class="modal-content" style="max-width: 340px;">
             <h3 class="gold-text" style="margin-bottom: 15px;">دخول لوحة القيادة</h3>
             <input type="email" id="adminEmail" placeholder="الإيميل" style="width:100%; padding:10px; margin-bottom:10px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
             <input type="password" id="adminPass" placeholder="كلمة المرور" style="width:100%; padding:10px; margin-bottom:15px; background:#222; border:1px solid #444; color:#fff; border-radius:6px; text-align:center;">
@@ -375,32 +373,32 @@
     <!-- لوحة الماستر -->
     <div class="modal" id="adminDashboardModal">
         <div class="modal-content">
-            <h2 class="gold-text" style="margin-bottom: 10px;">👑 لوحة التحكم باللاعبين والبطاقات</h2>
-            <div style="display:flex; gap:10px; justify-content:center; margin:15px 0; flex-wrap:wrap;">
-                <button class="btn-action" style="background:#e65100; border-color:#ff9800; font-size:13px; padding:10px 16px;" onclick="rerollBomb()">💣 إعادة تعيين القنبلة فقط</button>
-                <button class="btn-action" style="background:#8b0000; border-color:#b71c1c; font-size:13px; padding:10px 16px;" onclick="shuffleAll()">🎲 إعادة تعيين جميع البطاقات</button>
-                <button class="btn-action" style="background:#0277bd; border-color:#039be5; font-size:13px; padding:10px 16px;" onclick="copyPins()">📋 نسخ الرموز للتليجرام</button>
+            <h2 class="gold-text" style="margin-bottom: 10px; font-size: 18px;">👑 لوحة التحكم باللاعبين والبطاقات</h2>
+            <div style="display:flex; gap:8px; justify-content:center; margin:12px 0; flex-wrap:wrap;">
+                <button class="btn-action" style="background:#e65100; border-color:#ff9800; font-size:12px; padding:8px 12px;" onclick="rerollBomb()">💣 نقل القنبلة فقط</button>
+                <button class="btn-action" style="background:#8b0000; border-color:#b71c1c; font-size:12px; padding:8px 12px;" onclick="shuffleAll()">🎲 إعادة تعيين البطاقات</button>
+                <button class="btn-action" style="background:#0277bd; border-color:#039be5; font-size:12px; padding:8px 12px;" onclick="copyPins()">📋 نسخ الرموز</button>
             </div>
             <table class="admin-table">
                 <thead>
                     <tr>
                         <th>المقعد</th>
                         <th>الاسم</th>
-                        <th>البطاقة الحالية</th>
-                        <th>الرمز (PIN)</th>
+                        <th>البطاقة</th>
+                        <th>PIN</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody"></tbody>
             </table>
-            <button onclick="closeDashboard()" style="margin-top:20px; padding:8px 24px; background:#333; border:none; color:#fff; border-radius:6px; cursor:pointer;">إغلاق اللوحة</button>
+            <button onclick="closeDashboard()" style="margin-top:18px; padding:8px 20px; background:#333; border:none; color:#fff; border-radius:6px; cursor:pointer;">إغلاق اللوحة</button>
         </div>
     </div>
 
     <!-- نافذة تعديل النص -->
     <div class="modal" id="editTextModal">
-        <div class="modal-content" style="max-width: 440px;">
-            <h3 class="gold-text" style="margin-bottom: 12px;">تعديل النص المخصص للبطاقة</h3>
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 class="gold-text" style="margin-bottom: 12px;">تعديل النص المخصص</h3>
             <input type="hidden" id="editCardId">
             <input type="text" id="editCardName" placeholder="عنوان البطاقة" style="width:100%; padding:8px; margin-bottom:10px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;">
             <textarea id="editCardDesc" rows="4" placeholder="النص الذي يظهر أسفل الصندوق" style="width:100%; padding:8px; margin-bottom:15px; background:#222; border:1px solid #444; color:#fff; border-radius:4px;"></textarea>
@@ -412,7 +410,7 @@
     <script>
         let selectedSeat = null;
         let adminData = null;
-        let waitingForRotation = false;
+        let isTrailerMode = false;
 
         async function init() {
             try {
@@ -420,17 +418,11 @@
                 const data = await res.json();
                 renderSeats(data.players);
             } catch(e) {}
-            
-            // تهيئة وتخزين أول أجزاء الفيديو فوراً بدون تشغيل
-            const vid = document.getElementById('nativeVideo');
-            if (vid) {
-                vid.load();
-            }
         }
-        window.addEventListener('DOMContentLoaded', init);
+        init();
 
         function isMobileDevice() {
-            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth <= 820 && 'ontouchstart' in window);
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.matchMedia("(pointer:coarse)").matches;
         }
 
         function isPortrait() {
@@ -438,63 +430,76 @@
         }
 
         function handleContinueClick() {
+            document.getElementById('welcomeView').style.display = 'none';
+            isTrailerMode = true;
+
+            // إذا دخل من هاتف وكان الوضع عمودي، نلزمه بالتدوير
             if (isMobileDevice() && isPortrait()) {
-                document.getElementById('welcomeView').style.display = 'none';
-                waitingForRotation = true;
                 document.getElementById('rotatePromptView').style.display = 'flex';
             } else {
-                playCinemaDirectly();
+                startCinemaTrailer();
             }
         }
 
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
+        // مراقبة الدوران: إيقاف التريلر فوراً إذا عاد اللاعب للوضع العمودي
+        function handleOrientation() {
+            if (!isTrailerMode) return;
+            const vid = document.getElementById('nativeVideo');
 
-        function checkOrientation() {
-            if (waitingForRotation && !isPortrait()) {
-                waitingForRotation = false;
+            if (isMobileDevice() && isPortrait()) {
+                // رجع الموبايل بالطول أثناء التريلر -> إيقاف الفيديو وإظهار شاشة التدوير
+                if (vid) vid.pause();
+                document.getElementById('trailerView').style.display = 'none';
+                document.getElementById('rotatePromptView').style.display = 'flex';
+            } else {
+                // بالوضع العرضي -> إخفاء التنبيه واستئناف العرض فوراً
                 document.getElementById('rotatePromptView').style.display = 'none';
-                playCinemaDirectly();
+                startCinemaTrailer();
             }
         }
 
-        function playCinemaDirectly() {
-            document.getElementById('welcomeView').style.display = 'none';
-            document.getElementById('rotatePromptView').style.display = 'none';
-            
-            const trailerView = document.getElementById('trailerView');
-            trailerView.classList.add('active');
+        window.addEventListener('resize', handleOrientation);
+        window.addEventListener('orientationchange', handleOrientation);
 
-            // تفعيل ملء الشاشة إذا سمح المتصفح
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen().catch(() => {});
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen().catch(() => {});
-            }
+        function startCinemaTrailer() {
+            document.getElementById('rotatePromptView').style.display = 'none';
+            document.getElementById('trailerView').style.display = 'flex';
 
             const vid = document.getElementById('nativeVideo');
-            // تشغيل مباشر من الذاكرة المؤقتة المحفوظة
-            vid.play().catch(err => {
-                console.log("Direct play error: ", err);
-            });
+            if (vid) {
+                const playPromise = vid.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => {
+                        console.log("Play interrupted:", e);
+                    });
+                }
+            }
         }
 
-        function finishTrailer() {
-            waitingForRotation = false;
-            
-            const vid = document.getElementById('nativeVideo');
-            if (vid) vid.pause();
-            
-            if (document.fullscreenElement && document.exitFullscreen) {
-                document.exitFullscreen().catch(() => {});
+        // زر التخطي شغال باللمس والنقر معاً
+        const skipBtn = document.getElementById('cinemaSkipBtn');
+        skipBtn.addEventListener('touchstart', function(e) {
+            finishTrailer(e);
+        }, { passive: false });
+
+        function finishTrailer(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
             }
 
-            const trailerView = document.getElementById('trailerView');
-            trailerView.classList.remove('active');
+            isTrailerMode = false; // تعطيل نظام إجبار العرض فوراً
+
+            const vid = document.getElementById('nativeVideo');
+            if (vid) {
+                vid.pause();
+                vid.currentTime = 0;
+            }
+
+            document.getElementById('trailerView').style.display = 'none';
             document.getElementById('rotatePromptView').style.display = 'none';
-            
-            // بدء موسيقى العراب فوراً
+
+            // تشغيل موسيقى العراب فور انتهاء التريلر
             document.getElementById('bgMusic').src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
         }
 
