@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مافيا الأمراء | 𝔞𝔩 𝔭𝔯𝔧𝔫𝔠𝔢𝔰</title>
-    <!-- تحميل مسبق للفيديو في الخلفية فور فتح الصفحة ليشتغل فوراً بدون تحميل -->
     <link rel="preload" href="/static/trailer.mp4" as="video" type="video/mp4">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
@@ -39,6 +38,7 @@
             justify-content: center;
             padding: 20px;
             text-align: center;
+            transition: opacity 0.3s ease, visibility 0.3s;
         }
         .welcome-box {
             background: rgba(18, 18, 18, 0.96);
@@ -87,23 +87,32 @@
             100% { transform: rotate(0deg); }
         }
 
-        /* 3. شاشة السينما الخالصة (شاشة عرضية كاملة بدون أي أزرار تحكم) */
+        /* 3. شاشة السينما (تجهيز مسبق بالخلفية بدون display:none) */
         #trailerView {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: #000000;
             z-index: 9000;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        #trailerView.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
         .cinema-video-screen {
             width: 100vw;
             height: 100vh;
             object-fit: contain;
             background: #000;
-            pointer-events: none; /* يمنع اللمس نهائياً حتى لا تظهر أزرار الإيقاف والتقديم */
+            pointer-events: none;
         }
         .cinema-skip-btn {
             position: fixed;
@@ -221,7 +230,7 @@
             border-right: 3px solid #d4af37;
         }
 
-        /* تكييف شاشة اللعبة إذا قرر اللاعب قلب الهاتف بالعرض */
+        /* تكييف شاشة اللعبة في الوضع العرضي */
         @media (max-height: 520px) and (orientation: landscape) {
             body { justify-content: flex-start; padding: 8px; }
             .game-wrapper { max-width: 94%; }
@@ -303,7 +312,7 @@
         </p>
     </div>
 
-    <!-- 3. شاشة السينما (لا وجود لأي أشرطة أو أزرار تشغيل أو إيقاف) -->
+    <!-- 3. شاشة السينما المحملة مسبقاً -->
     <div id="trailerView">
         <button class="cinema-skip-btn" onclick="finishTrailer()">تخطي العرض ✕</button>
         <video id="nativeVideo" 
@@ -412,7 +421,7 @@
                 renderSeats(data.players);
             } catch(e) {}
             
-            // بدء تنزيل وتجهيز الفيديو فوراً في ذاكرة المتصفح
+            // تهيئة وتخزين أول أجزاء الفيديو فوراً بدون تشغيل
             const vid = document.getElementById('nativeVideo');
             if (vid) {
                 vid.load();
@@ -429,9 +438,8 @@
         }
 
         function handleContinueClick() {
-            document.getElementById('welcomeView').style.display = 'none';
-
             if (isMobileDevice() && isPortrait()) {
+                document.getElementById('welcomeView').style.display = 'none';
                 waitingForRotation = true;
                 document.getElementById('rotatePromptView').style.display = 'flex';
             } else {
@@ -451,9 +459,13 @@
         }
 
         function playCinemaDirectly() {
+            document.getElementById('welcomeView').style.display = 'none';
             document.getElementById('rotatePromptView').style.display = 'none';
-            document.getElementById('trailerView').style.display = 'flex';
+            
+            const trailerView = document.getElementById('trailerView');
+            trailerView.classList.add('active');
 
+            // تفعيل ملء الشاشة إذا سمح المتصفح
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen().catch(() => {});
@@ -462,9 +474,9 @@
             }
 
             const vid = document.getElementById('nativeVideo');
-            vid.currentTime = 0;
+            // تشغيل مباشر من الذاكرة المؤقتة المحفوظة
             vid.play().catch(err => {
-                console.log("Auto-play error: ", err);
+                console.log("Direct play error: ", err);
             });
         }
 
@@ -478,10 +490,11 @@
                 document.exitFullscreen().catch(() => {});
             }
 
-            document.getElementById('trailerView').style.display = 'none';
+            const trailerView = document.getElementById('trailerView');
+            trailerView.classList.remove('active');
             document.getElementById('rotatePromptView').style.display = 'none';
             
-            // تشغيل موسيقى العراب على الفور
+            // بدء موسيقى العراب فوراً
             document.getElementById('bgMusic').src = "https://www.youtube.com/embed/AJgE_dLWsuQ?autoplay=1&loop=1&playlist=AJgE_dLWsuQ";
         }
 
