@@ -1,9 +1,9 @@
 import json
 import os
 import random
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 DATA_FILE = "game_state.json"
 
 DEFAULT_CARDS = [
@@ -102,6 +102,12 @@ def load_game_state():
 def save_game_state(state):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+# ميزة البث السريع للفيديو بنظام المقاطع لتشغيله بالموبايل بكسر من الثانية
+@app.route("/static/<path:filename>")
+def serve_static_stream(filename):
+    return send_from_directory("static", filename, conditional=True)
 
 
 @app.route("/")
